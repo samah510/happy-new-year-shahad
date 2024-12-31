@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year</title>
+
+    <!-- Minecraft-style font import -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Background video */
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Countdown section */
+        #countdown-section {
+            position: absolute;
+            text-align: center;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2em;
+        }
+
+        /* Main content - hidden initially */
+        #main-content {
+            display: none;
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+
+        /* Happy New Year text */
+        #happy-new-year {
+            font-size: 3em;
+            margin-bottom: 30px;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        /* Minecraft Block */
+        #minecraft-block {
+            width: 200px;
+            height: 200px;
+            background-color: #666;
+            display: inline-block;
+            cursor: pointer;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Note */
+        .note {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.6); /* Dark opaque background */
+            color: #fff; /* White text */
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+            width: auto; /* Fits to the text content */
+            max-width: 80%; /* Prevents note from being too wide */
+            text-align: center; /* Centers text horizontally */
+            position: relative; /* Position relative to the surrounding content */
+            margin-top: 20px; /* Creates space below the Happy New Year text */
+            z-index: 1;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Optional: Adds shadow for visibility */
+        }
+
+        /* Animation for fade-in */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <video autoplay loop muted id="background-video">
+        <source src="c.mp4" type="video/mp4">
+    </video>
+
+    <!-- Rain Sound -->
+    <audio id="rain-sound" loop>
+        <source src="rain-sound.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Countdown Section -->
+    <div id="countdown-section">
+        <div id="countdown"></div>
+    </div>
+
+    <!-- Main Content (hidden initially) -->
+    <div id="main-content">
+        <!-- Happy New Year Text -->
+        <h1 id="happy-new-year" class="twinkle">Happy New Year!</h1>
+
+        <!-- Minecraft Block (clickable) -->
+        <div id="minecraft-block" class="minecraft-block" onclick="startAudio()"></div>
+
+        <!-- Note -->
+        <div id="note" class="note">
+            <p>ShuShuu, I'm so glad we met and grateful for the time we've had so far, every moment with you is a perfect block in my world. You mean so much to me and I love you very much. Here’s to crafting another amazing year with you <3</p>
+        </div>
+    </div>
+
+    <script>
+        // New Year's countdown date
+        let countdownDate = new Date("Jan 1, 2025 00:00:00").getTime(); // New Year's countdown
+        let countdownElement = document.getElementById("countdown");
+        let countdownSection = document.getElementById("countdown-section");
+        let audio = document.getElementById("rain-sound");
+        let note = document.getElementById("note");
+        let minecraftBlock = document.getElementById("minecraft-block");
+
+        // Function to start the audio when block is clicked
+        function startAudio() {
+            audio.play(); // Start the audio
+            minecraftBlock.style.display = "none"; // Hide the block after clicking
+            showNote(); // Show the note
+        }
+
+        // Countdown Timer (New Year's countdown)
+        let x = setInterval(function() {
+            let now = new Date().getTime(); // Get the current time
+            let distance = countdownDate - now; // Time difference
+
+            let days = Math.floor(distance / (1000 * 60 * 60 * 24)); // Calculate the days
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // Calculate the hours
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); // Calculate the minutes
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000); // Calculate the seconds
+
+            countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s "; // Display countdown
+
+            // When the countdown finishes, hide it and show the main content
+            if (distance < 0) {
+                clearInterval(x);
+                countdownSection.style.display = "none"; // Hide countdown
+                showMainContent(); // Show main content (Happy New Year and Block)
+            }
+        }, 1000);
+
+        // Function to show the main content after countdown
+        function showMainContent() {
+            document.getElementById("main-content").style.display = "block"; // Show main content
+        }
+
+        // Function to show the note
+        function showNote() {
+            note.style.display = "block"; // Reveal the note when clicked
+        }
+    </script>
+</body>
+</html>
